@@ -1,9 +1,0 @@
-panic: runtime error: index out of range [4] with length 4
-
-goroutine 1 [running]:
-tp2/interfaz_consultor.(*interfaz).ver_tablero(0xc000104f30, {0xc00010c5c0, 0x4, 0xc000118b64?})
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/interfaz_consultor/interfaz.go:72 +0x33b
-tp2/interfaz_consultor.(*interfaz).Iniciar(0xc000104f30)
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/interfaz_consultor/interfaz.go:34 +0x2aa
-main.main()
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/main.go:7 +0x185

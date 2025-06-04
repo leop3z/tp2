@@ -1,9 +1,0 @@
-panic: runtime error: index out of range [1] with length 1
-
-goroutine 1 [running]:
-tp2/interfaz_consultor.(*interfaz).info_vuelo(0xc000104ea0?, {0xc0000133e0?, 0xa?, 0xc00011894c?})
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/interfaz_consultor/interfaz.go:87 +0xc5
-tp2/interfaz_consultor.(*interfaz).Iniciar(0xc000104f30)
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/interfaz_consultor/interfaz.go:36 +0x25f
-main.main()
-	/home/leop3z/Escritorio/Facultad/algo2/entregas/tp2/main.go:7 +0x185
