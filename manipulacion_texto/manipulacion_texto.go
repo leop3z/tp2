@@ -3,6 +3,7 @@ package manipulacion_texto
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func Split(cadena string, separador rune) []string {
@@ -27,6 +28,9 @@ func StringToInt(cadena string) int {
 
 func PrintSlice(cadena []string, separador rune) {
 	for _, i := range cadena {
+		if len(i) > 1 {
+			i = strings.TrimLeft(i, "0")
+		}
 		fmt.Printf("%s%c", i, separador)
 	}
 	fmt.Print("\n")
