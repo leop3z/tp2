@@ -86,7 +86,6 @@ func (consultor *consultor) VerTablero(cantidad int, modo string, desde time.Tim
 			} else {
 				tablero.InsertarPrimero(vuelo.datos)
 			}
-
 		}
 		iter.Siguiente()
 	}
@@ -122,5 +121,16 @@ func (consultor *consultor) PrioridadVuelos(cantidad int) TDALista.Lista[[]strin
 }
 
 func (consultor *consultor) Borrar(desde string, hasta string) {
+	iter := consultor.orden.IteradorRango(&desde, &hasta)
+	claves_borrar := []string{}
 
+	for iter.HaySiguiente() {
+		codigo, _ := iter.VerActual()
+		claves_borrar = append(claves_borrar, codigo)
+	}
+
+	for _, codigo := range claves_borrar {
+		consultor.orden.Borrar(codigo)
+		consultor.vuelos.Borrar(codigo)
+	}
 }

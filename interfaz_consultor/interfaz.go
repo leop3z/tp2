@@ -94,7 +94,6 @@ func (interfaz *interfaz) info_vuelo(argumentos []string) {
 }
 
 func (interfaz *interfaz) siguiente_vuelo(argumentos []string) {
-
 }
 
 func (interfaz *interfaz) prioridad_vuelos(argumentos []string) {
@@ -112,7 +111,12 @@ func (interfaz *interfaz) prioridad_vuelos(argumentos []string) {
 }
 
 func (interfaz *interfaz) borrar(argumentos []string) {
-
+	if len(argumentos) != 3 {
+		interfaz.error(argumentos[0])
+	}
+	desde := argumentos[1]
+	hasta := argumentos[2]
+	interfaz.consultor.Borrar(desde, hasta)
 }
 
 func (interfaz *interfaz) ok() {
