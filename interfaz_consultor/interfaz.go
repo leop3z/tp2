@@ -77,7 +77,8 @@ func (interfaz *interfaz) ver_tablero(argumentos []string) {
 	lista := interfaz.consultor.VerTablero(cantidad, modo, desde, hasta)
 	iter := lista.Iterador()
 	for iter.HaySiguiente() {
-		Texto.PrintSlice(iter.VerActual(), ' ')
+		vuelo := iter.VerActual()
+		fmt.Printf("%s - %s\n", vuelo[6], vuelo[0])
 		iter.Siguiente()
 	}
 	interfaz.ok()
@@ -91,6 +92,7 @@ func (interfaz *interfaz) info_vuelo(argumentos []string) {
 		return
 	}
 	Texto.PrintSlice(vuelo, ' ')
+	interfaz.ok()
 }
 
 func (interfaz *interfaz) siguiente_vuelo(argumentos []string) {
@@ -104,7 +106,8 @@ func (interfaz *interfaz) prioridad_vuelos(argumentos []string) {
 	lista := interfaz.consultor.PrioridadVuelos(cantidad)
 	iter := lista.Iterador()
 	for iter.HaySiguiente() {
-		Texto.PrintSlice(iter.VerActual(), ' ')
+		vuelos := iter.VerActual()
+		fmt.Printf("%s - %s\n", vuelos[5], vuelos[0])
 		iter.Siguiente()
 	}
 	interfaz.ok()
