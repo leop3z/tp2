@@ -45,7 +45,7 @@ func (consultor consultor) compararPrioridades(a, b string) int {
 	} else if vueloA.prioridad < vueloB.prioridad {
 		return -1
 	} else {
-		return strings.Compare(vueloA.codigo, vueloB.codigo)
+		return -strings.Compare(vueloA.codigo, vueloB.codigo)
 	}
 }
 
