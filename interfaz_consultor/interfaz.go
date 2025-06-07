@@ -51,7 +51,7 @@ func (interfaz *interfaz) agregar_archivo(argumentos []string) {
 	ruta := argumentos[1]
 	archivo, err := os.Open(ruta)
 	if err != nil {
-		fmt.Printf("Error %v al abrir el archivo %s", ruta, err)
+		interfaz.error(argumentos[0])
 		return
 	}
 	defer archivo.Close()
@@ -66,6 +66,10 @@ func (interfaz *interfaz) agregar_archivo(argumentos []string) {
 }
 
 func (interfaz *interfaz) ver_tablero(argumentos []string) {
+	if len(argumentos) != 5 {
+		interfaz.error(argumentos[0])
+		return
+	}
 	cantidad := Texto.StringToInt(argumentos[1])
 	modo := argumentos[2]
 	desde, _ := time.Parse(TIME_LAYOUT, argumentos[3])
@@ -85,12 +89,12 @@ func (interfaz *interfaz) ver_tablero(argumentos []string) {
 }
 
 func (interfaz *interfaz) info_vuelo(argumentos []string) {
-	codigo := argumentos[1]
-	vuelo := interfaz.consultor.InfoVuelo(codigo)
-	if len(vuelo) == 0 {
+	if len(argumentos) != 2 {
 		interfaz.error(argumentos[0])
 		return
 	}
+	codigo := argumentos[1]
+	vuelo := interfaz.consultor.InfoVuelo(codigo)
 	Texto.PrintSlice(vuelo, ' ')
 	interfaz.ok()
 }
@@ -102,6 +106,7 @@ func (interfaz *interfaz) prioridad_vuelos(argumentos []string) {
 	cantidad := Texto.StringToInt(argumentos[1])
 	if cantidad <= 0 {
 		interfaz.error(argumentos[0])
+		return
 	}
 	lista := interfaz.consultor.PrioridadVuelos(cantidad)
 	iter := lista.Iterador()
@@ -116,10 +121,15 @@ func (interfaz *interfaz) prioridad_vuelos(argumentos []string) {
 func (interfaz *interfaz) borrar(argumentos []string) {
 	if len(argumentos) != 3 {
 		interfaz.error(argumentos[0])
+		return
 	}
 	desde := argumentos[1]
 	hasta := argumentos[2]
-	interfaz.consultor.Borrar(desde, hasta)
+	vuelos_borrados := interfaz.consultor.Borrar(desde, hasta)
+	for iter := vuelos_borrados.Iterador(); iter.HaySiguiente(); iter.Siguiente() {
+		Texto.PrintSlice(iter.VerActual(), ' ')
+	}
+	interfaz.ok()
 }
 
 func (interfaz *interfaz) ok() {
@@ -127,5 +137,5 @@ func (interfaz *interfaz) ok() {
 }
 
 func (interfaz *interfaz) error(comando string) {
-	fmt.Printf("Error con el comando: %s\n", comando)
+	fmt.Fprintf(os.Stderr, "Error en comando %s\n", comando)
 }
