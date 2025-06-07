@@ -16,5 +16,5 @@ type ConsultorVuelos interface {
 
 	SiguienteVuelo(origen string, destino string, fecha string) []string
 
-	Borrar(desde string, hasta string)
+	Borrar(desde string, hasta string) TDALista.Lista[[]string]
 }
