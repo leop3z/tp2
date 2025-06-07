@@ -76,18 +76,35 @@ func (consultor *consultor) AgregarArchivo(lista TDALista.Lista[[]string]) {
 
 func (consultor *consultor) VerTablero(cantidad int, modo string, desde time.Time, hasta time.Time) TDALista.Lista[[]string] {
 	tablero := TDALista.CrearListaEnlazada[[]string]()
+	contador := 0
+	var temp [][]string
+
 	iter := consultor.orden.Iterador()
 	for iter.HaySiguiente() {
 		codigo, _ := iter.VerActual()
 		vuelo := consultor.vuelos.Obtener(codigo)
-		if vuelo.fecha.After(desde) && vuelo.fecha.Before(hasta) {
-			if modo == "asc" {
-				tablero.InsertarUltimo(vuelo.datos)
-			} else {
-				tablero.InsertarPrimero(vuelo.datos)
-			}
+		if vuelo.fecha.After(hasta) {
+			iter.Siguiente()
+			continue
 		}
+		if vuelo.fecha.Before(desde) {
+			iter.Siguiente()
+			continue
+		}
+		temp = append(temp, vuelo.datos)
 		iter.Siguiente()
+	}
+
+	if modo == "desc" {
+		for i := len(temp) - 1; i >= 0 && (cantidad <= 0 || contador < cantidad); i-- {
+			tablero.InsertarUltimo(temp[i])
+			contador++
+		}
+	} else {
+		for i := 0; i < len(temp) && (cantidad <= 0 || contador < cantidad); i++ {
+			tablero.InsertarUltimo(temp[i])
+			contador++
+		}
 	}
 	return tablero
 }
@@ -120,12 +137,14 @@ func (consultor *consultor) PrioridadVuelos(cantidad int) TDALista.Lista[[]strin
 	return tablero
 }
 
-func (consultor *consultor) Borrar(desde string, hasta string) {
+func (consultor *consultor) Borrar(desde string, hasta string) TDALista.Lista[[]string] {
 	iter := consultor.orden.IteradorRango(&desde, &hasta)
 	claves_borrar := []string{}
+	borrados := TDALista.CrearListaEnlazada[[]string]()
 
 	for iter.HaySiguiente() {
 		codigo, _ := iter.VerActual()
+		borrados.InsertarUltimo(consultor.vuelos.Obtener(codigo).datos)
 		claves_borrar = append(claves_borrar, codigo)
 	}
 
@@ -133,4 +152,5 @@ func (consultor *consultor) Borrar(desde string, hasta string) {
 		consultor.orden.Borrar(codigo)
 		consultor.vuelos.Borrar(codigo)
 	}
+	return borrados
 }
